@@ -1,0 +1,202 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mb-4">📊 Dashboard</h2>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body text-center">
+                    <h5>Total Reviews</h5>
+                    <h2>{{ total }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body text-center">
+                    <h5>Positive</h5>
+                    <h2>{{ positive }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body text-center">
+                    <h5>Negative</h5>
+                    <h2>{{ negative }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning shadow">
+                <div class="card-body text-center">
+                    <h5>Neutral</h5>
+                    <h2>{{ neutral }}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    🥧 Sentiment Distribution
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="pieChart" height="300"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    📈 Sentiment Analytics
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="barChart" height="300"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    new Chart(document.getElementById("pieChart"), {
+
+        type: "pie",
+
+        data: {
+
+            labels: ["Positive", "Negative", "Neutral"],
+
+            datasets: [{
+
+                data: [
+
+                    {{ positive }},
+
+                    {{ negative }},
+
+                    {{ neutral }}
+
+                ],
+
+                backgroundColor: [
+
+                    "#28a745",
+
+                    "#dc3545",
+
+                    "#ffc107"
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
+        }
+
+    });
+
+
+    new Chart(document.getElementById("barChart"), {
+
+        type: "bar",
+
+        data: {
+
+            labels: ["Positive", "Negative", "Neutral"],
+
+            datasets: [{
+
+                label: "Reviews",
+
+                data: [
+
+                    {{ positive }},
+
+                    {{ negative }},
+
+                    {{ neutral }}
+
+                ],
+
+                backgroundColor: [
+
+                    "#28a745",
+
+                    "#dc3545",
+
+                    "#ffc107"
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

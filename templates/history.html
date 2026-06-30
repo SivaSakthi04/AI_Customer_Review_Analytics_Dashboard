@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mb-4">📜 Review History</h2>
+
+    <!-- Search Form -->
+    <form method="GET">
+
+        <div class="row mb-3">
+
+            <div class="col-md-9">
+
+                <input
+                    type="text"
+                    class="form-control"
+                    name="search"
+                    placeholder="Search Review..."
+                    value="{{ search }}">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button type="submit" class="btn btn-primary w-100">
+                    🔍 Search
+                </button>
+
+            </div>
+
+            <div class="col-md-1">
+
+                <a href="/export" class="btn btn-success w-100">
+                    📥
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <!-- History Table -->
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>#</th>
+                <th>Review</th>
+                <th>Sentiment</th>
+                <th>Confidence</th>
+                <th>Date</th>
+                <th width="120">Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% if reviews %}
+
+            {% for row in reviews %}
+
+            <tr>
+
+                <!-- Continuous numbering -->
+                <td>{{ loop.index }}</td>
+
+                <td>{{ row[1] }}</td>
+
+                <td>
+
+                    {% if row[2] == "Positive" %}
+
+                        <span class="badge bg-success">
+                            {{ row[2] }}
+                        </span>
+
+                    {% elif row[2] == "Negative" %}
+
+                        <span class="badge bg-danger">
+                            {{ row[2] }}
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-warning text-dark">
+                            {{ row[2] }}
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>{{ row[3] }}%</td>
+
+                <td>{{ row[4] }}</td>
+
+                <td>
+
+    <a
+        href="/edit/{{ row[0] }}"
+        class="btn btn-warning btn-sm mb-1">
+
+        ✏ Edit
+
+    </a>
+
+    <br>
+
+    <a
+        href="/delete/{{ row[0] }}"
+        class="btn btn-danger btn-sm"
+        onclick="return confirm('Delete this review?')">
+
+        🗑 Delete
+
+    </a>
+
+</td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="6" class="text-center text-muted">
+
+                    No Reviews Found.
+
+                </td>
+
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
